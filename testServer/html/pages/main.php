@@ -15,6 +15,7 @@
 <body class="w3-theme-l5">
   <?php
   // 세션 설정 (이건 좀 야매임. 굉장히 보안적으로 취약함. 근데 귀찮으니까 이렇게 한 것일 뿐..)
+  // ...
   session_start();
   $_SESSION['DB_host'] = "localhost";
   $_SESSION['DB_id'] = "itp40001";
@@ -27,7 +28,7 @@
     die("CONNECTION FAILED! : ". $conn->connect_error);
   }
 
-  // Login page에서 넘어온 정보 저장하기 
+  // Login page에서 넘어온 정보 저장하기
   if($_POST['user_name'] != NULL){
     $user_name = $_POST['user_name'];
     $user_email = $_POST['user_email'];
