@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+<link rel="stylesheet" href="../../css/main.css">
 <script src="../../js/includeHTML.js"></script>
 <script src="../../js/includeRouter.js"></script>
 <style>
@@ -15,7 +17,7 @@
 <body class="w3-theme-l5">
   <?php
   // 세션 설정 (이건 좀 야매임. 굉장히 보안적으로 취약함. 근데 귀찮으니까 이렇게 한 것일 뿐..)
-  
+
   session_start();
   $_SESSION['DB_host'] = "localhost";
   $_SESSION['DB_id'] = "itp40001";
@@ -88,6 +90,20 @@
       x.className += " w3-show";
     } else {
       x.className = x.className.replace(" w3-show", "");
+    }
+  }
+
+  // 댓글 보기
+  function openComment(id, id2){
+    if(document.getElementById(id).style.display == "none"){
+      // alert('now : none -> block');
+      document.getElementById(id).style.display = "block";
+      document.getElementById(id2).innerHTML = "<i class='fa fa-comment'></i> &nbsp Close";
+    }
+    else{
+      // alert('now : block -> none');
+      document.getElementById(id).style.display = 'none';
+      document.getElementById(id2).innerHTML = "<i class='fa fa-comment'></i> Comment";
     }
   }
 
