@@ -1,6 +1,6 @@
 /* leftColumn.php */
 .filter{
-  
+
 }
 .check-box-container{
   padding: 0.5em;
@@ -70,4 +70,17 @@
 .comment-delete:hover{
   cursor: pointer;
   color: #555;
+}
+
+/* Review */
+.review-user-info{
+  margin-top: 0 !important;
+  background-color: #ddd;
+  padding: 1em;
+}
+.user-info{
+  margin-left: 1em;
+}
+.comment-time{
+  margin-right: 1em;
 }
