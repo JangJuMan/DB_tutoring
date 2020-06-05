@@ -46,6 +46,9 @@
     echo "<script>alert('잘못된 접근입니다.')</script>";
     echo "<script>location.href='login.php'</script>";
   }
+
+  // 현재 페이지 정보 기록
+  $_SESSION['now'] = "main";
   ?>
 
 
