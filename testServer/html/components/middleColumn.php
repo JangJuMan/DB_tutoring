@@ -48,7 +48,7 @@
 
   <!-- 게시글 1번  -->
   <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-    <img src="<?php echo $_SESSION['user_img']?>" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:50px">
+    <img src="<?php echo $_SESSION['user_img']?>" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:50px; cursor:pointer" onclick="location.href='review.php'">
     <span class="w3-right w3-opacity">DB.Bbs.modifyTime</span>
     <h4><?php echo $_SESSION['user_name']; if(1 == 1){echo "(튜터)";}else{echo "(튜티)";}?></h4><br>
     <h4>DB.Bbs.Title</h4>
@@ -97,107 +97,6 @@
     <button id="bbs1_comment" type="button" class="w3-button w3-theme-d2 w3-margin-bottom" onclick="openComment('bbs1_additional', 'bbs1_comment')"><i class="fa fa-comment"></i>  Comment</button>
   </div>
 
-  <!-- 게시글 2번  -->
-  <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-    <img src="<?php echo $_SESSION['user_img']?>" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:50px">
-    <span class="w3-right w3-opacity">DB.Bbs.modifyTime</span>
-    <h4><?php echo $_SESSION['user_name']; if(1 == 1){echo "(튜터)";}else{echo "(튜티)";}?></h4><br>
-    <h4>DB.Bbs.Title</h4>
-    <hr class="w3-clear">
-    <p>DB.Bbs.content</p>
-      <div class="w3-row-padding" style="margin:0 -16px">
-        <div class="w3-half">
-        </div>
-        <div class="w3-half">
-      </div>
-    </div>
-    <div id="bbs2_additional" class="w3-container w3-round bbs-comment" style="display:none">
-      <hr>
-      <div class="comment-container">
-        <img src="<?php echo $_SESSION['user_img']?>" alt="Avatar" class="w3-left w3-circle w3-margin-right comment-img" style="width:30px">
-        <p class="comment-writer"><?php echo $_SESSION['user_name']; if(1 == 1){echo "(튜터)";}else{echo "(튜티)";}?></p>
-        <p class="comment-text">hellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohell ohellohellohellohellohellohellohellohellohellohellohellohello</p>
-        <p class="comment-time">18:04</p>
-        <div class="comment-control">
-          <a class="comment-modify">수정하기</a>
-          <a class="comment-delete">삭제하기</a>
-        </div>
-      </div>
-      <div class="comment-container">
-        <img src="<?php echo $_SESSION['user_img']?>" alt="Avatar" class="w3-left w3-circle w3-margin-right comment-img" style="width:30px">
-        <p class="comment-writer"><?php echo $_SESSION['user_name']; if(1 == 1){echo "(튜터)";}else{echo "(튜티)";}?></p>
-        <p class="comment-text">hellohellohellohellohellohellohellohellohellohllohellohellohellohellohello</p>
-        <p class="comment-time">18:04</p>
-        <div class="comment-control">
-          <a class="comment-modify">수정하기</a>
-          <a class="comment-delete">삭제하기</a>
-        </div>
-      </div>
-      <div class="comment-container">
-        <img src="<?php echo $_SESSION['user_img']?>" alt="Avatar" class="w3-left w3-circle w3-margin-right comment-img" style="width:30px">
-        <p class="comment-writer"><?php echo $_SESSION['user_name']; if(1 == 1){echo "(튜터)";}else{echo "(튜티)";}?></p>
-        <p class="comment-text">hellohellohellohellohellohelloheohello</p>
-        <p class="comment-time">18:04</p>
-        <div class="comment-control">
-          <a class="comment-modify">수정하기</a>
-          <a class="comment-delete">삭제하기</a>
-        </div>
-      </div>
-    </div>
-    <button id="bbs2_like" type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
-    <button id="bbs2_comment" type="button" class="w3-button w3-theme-d2 w3-margin-bottom" onclick="openComment('bbs2_additional', 'bbs2_comment')"><i class="fa fa-comment"></i>  Comment</button>
-  </div>
-
-  <!-- 게시물 3번  -->
-  <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-    <img src="<?php echo $_SESSION['user_img']?>" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:50px">
-    <span class="w3-right w3-opacity">DB.Bbs.modifyTime</span>
-    <h4><?php echo $_SESSION['user_name']; if(1 == 1){echo "(튜터)";}else{echo "(튜티)";}?></h4><br>
-    <h4>DB.Bbs.Title</h4>
-    <hr class="w3-clear">
-    <p>DB.Bbs.content</p>
-      <div class="w3-row-padding" style="margin:0 -16px">
-        <div class="w3-half">
-        </div>
-        <div class="w3-half">
-      </div>
-    </div>
-    <div id="bbs3_additional" class="w3-container w3-round bbs-comment" style="display:none">
-      <hr>
-      <div class="comment-container">
-        <img src="<?php echo $_SESSION['user_img']?>" alt="Avatar" class="w3-left w3-circle w3-margin-right comment-img" style="width:30px">
-        <p class="comment-writer"><?php echo $_SESSION['user_name']; if(1 == 1){echo "(튜터)";}else{echo "(튜티)";}?></p>
-        <p class="comment-text">hellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohell ohellohellohellohellohellohellohellohellohellohellohellohello</p>
-        <p class="comment-time">18:04</p>
-        <div class="comment-control">
-          <a class="comment-modify">수정하기</a>
-          <a class="comment-delete">삭제하기</a>
-        </div>
-      </div>
-      <div class="comment-container">
-        <img src="<?php echo $_SESSION['user_img']?>" alt="Avatar" class="w3-left w3-circle w3-margin-right comment-img" style="width:30px">
-        <p class="comment-writer"><?php echo $_SESSION['user_name']; if(1 == 1){echo "(튜터)";}else{echo "(튜티)";}?></p>
-        <p class="comment-text">hellohellohellohellohellohellohellohellohellohllohellohellohellohellohello</p>
-        <p class="comment-time">18:04</p>
-        <div class="comment-control">
-          <a class="comment-modify">수정하기</a>
-          <a class="comment-delete">삭제하기</a>
-        </div>
-      </div>
-      <div class="comment-container">
-        <img src="<?php echo $_SESSION['user_img']?>" alt="Avatar" class="w3-left w3-circle w3-margin-right comment-img" style="width:30px">
-        <p class="comment-writer"><?php echo $_SESSION['user_name']; if(1 == 1){echo "(튜터)";}else{echo "(튜티)";}?></p>
-        <p class="comment-text">hellohellohellohellohellohelloheohello</p>
-        <p class="comment-time">18:04</p>
-        <div class="comment-control">
-          <a class="comment-modify">수정하기</a>
-          <a class="comment-delete">삭제하기</a>
-        </div>
-      </div>
-    </div>
-    <button id="bbs3_like" type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
-    <button id="bbs3_comment" type="button" class="w3-button w3-theme-d2 w3-margin-bottom" onclick="openComment('bbs3_additional', 'bbs3_comment')"><i class="fa fa-comment"></i>  Comment</button>
-  </div>
 
 <!-- End Middle Column -->
 </div>
