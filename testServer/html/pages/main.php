@@ -17,12 +17,19 @@
 <body class="w3-theme-l5">
   <?php
   // 세션 설정 (이건 좀 야매임. 굉장히 보안적으로 취약함. 근데 귀찮으니까 이렇게 한 것일 뿐..)
-
   session_start();
   $_SESSION['DB_host'] = "localhost";
   $_SESSION['DB_id'] = "itp40001";
   $_SESSION['DB_pw'] = "hgudba11*";
   $_SESSION['DB_db'] = "itp40001";
+
+  // 디비 테이블 이름을 세션으로 저장해서 사용.
+  //  왜냐고 물으면 변수 왜 사용해요? 랑 비슷한 느낌 (테이블 이름 바뀌면 이거만 바꿔서 해결 가능)
+  $_SESSION['user_table'] = "User";
+  $_SESSION['bbs_table'] = "Bbs";
+  $_SESSION['comment_table'] = "Comment";
+
+
 
   // DB 연결
   $conn = new mysqli($_SESSION['DB_host'], $_SESSION['DB_id'], $_SESSION['DB_pw'], $_SESSION['DB_db']);
@@ -38,6 +45,32 @@
     $_SESSION['user_name'] = $user_name;
     $_SESSION['user_email'] = $user_email;
     $_SESSION['user_img'] = $user_img;
+
+
+    // DB에 새로운 유저라면 정보 넣기 (INSERT 하기)
+    $enroll_new_user = "INSERT INTO $_SESSION[user_table] (email, image, name) SELECT '$user_email', '$user_img', '$user_name' FROM dual
+                          WHERE NOT EXISTS (SELECT * FROM $_SESSION[user_table] WHERE email='$user_email')";
+
+    if($conn->query($enroll_new_user) === TRUE){
+      // echo "<h1>new user record created successfully</h1>";
+    }
+    else{
+      echo "ERROR: " . $enroll_new_user . "<br>" . $conn->error;
+    }
+
+    // DB에서 유저정보 가져오고 저장하기 (SELECT 하기)
+    $to_get_user_info = "SELECT * FROM $_SESSION[user_table] WHERE email='$user_email'";
+    $result = mysqli_query($conn, $to_get_user_info);
+    $user_info = mysqli_fetch_assoc($result);
+    $_SESSION['user_id'] = $user_info['user_id'];
+    $_SESSION['gender'] = $user_info['gender'];
+    $_SESSION['phone'] = $user_info['phone'];
+    $_SESSION['birth_year'] = $user_info['birth_year'];
+    $_SESSION['address'] = $user_info['address'];
+    $_SESSION['recent_log'] = $user_info['recent_login_log'];
+    $_SESSION['is_korean'] = $user_info['is_korean'];
+    $_SESSION['modify_time'] = $user_info['modify_time'];
+    $_SESSION['is_tutor'] = $user_info['is_tutor'];
   }
 
   // 비 정상적인 접근 차단
@@ -49,8 +82,10 @@
 
   // 현재 페이지 정보 기록
   $_SESSION['now'] = "main";
-  ?>
 
+  // DB연결 종료
+  $conn->close();
+?>
 
   <!-- Navbar -->
   <Navbar include-html="../components/navBar.php"></Navbar>

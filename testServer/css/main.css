@@ -1,4 +1,4 @@
-/* leftColumn.php */
+/* MiddleColumn.php */
 .filter{
 
 }
@@ -24,14 +24,13 @@
 }
 .bbs-comment{
   margin: 1em 0;
-  /* border-top: 1px solid #bbb; */
-  /* background-color: white; */
   padding: 0.5em;
 }
 .comment-container{
   border: 1px solid #aaa;
   border-radius: 10px;
   margin: 1em 0;
+  padding-bottom: 1em;
   background-color: #f4f4f4;
 }
 .comment-img{
@@ -39,7 +38,8 @@
 }
 .comment-writer{
   padding: 0.2em;
-  border: 1px solid #f4f4f4;
+/*   border-bottom: 1px solid #f4f4f4; */
+  margin-bottom: 0;
 }
 .comment-text{
   margin: 0;
@@ -71,6 +71,29 @@
   cursor: pointer;
   color: #555;
 }
+.no-data{
+  text-align: center;
+  padding: 1em;
+  margin: 3em 0;
+}
+.comment-input{
+  padding: 0.5em;
+  width: 80%;
+  border-radius: 3px;
+  border: 1px solid #bbb;
+}
+.comment-submit{
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  padding: 0.5em;
+}
+.comment-submit:hover{
+  background-color: #ddd;
+}
+.comment-submit:active{
+  background-color: #f7f7f7;
+}
+
 
 /* Review */
 .review-user-info{
