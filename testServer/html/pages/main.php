@@ -28,6 +28,7 @@
   $_SESSION['user_table'] = "User";
   $_SESSION['bbs_table'] = "Bbs";
   $_SESSION['comment_table'] = "Comment";
+  $_SESSION['mypage_table'] = "Mypage";
 
 
 
@@ -142,6 +143,31 @@
       // alert('now : block -> none');
       document.getElementById(id).style.display = 'none';
       document.getElementById(id2).innerHTML = "<i class='fa fa-comment'></i> Comment";
+    }
+  }
+
+  // form DB 연결하기
+  function mySubmit(form_id, operation, crud_id){
+    if(operation == "modify"){
+      var input_modify = confirm("글을 수정하시겠습니까?");
+      if(input_modify){
+        document.getElementById(crud_id).value = "comment_update";
+        document.getElementById(form_id).submit();
+      }
+    }
+    else if(operation == "delete"){
+      var input_delete = confirm("글을 삭제하시겠습니까?");
+      if(input_delete){
+        document.getElementById(crud_id).value = "comment_delete";
+        document.getElementById(form_id).submit();
+      }
+    }
+    else if(operation == "insert"){
+      document.getElementById("crudType_insert").value = "comment_insert";
+      document.getElementById(form_id).submit();
+    }
+    else{
+      alert("error");
     }
   }
 
