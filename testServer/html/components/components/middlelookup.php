@@ -5,9 +5,9 @@
     <div class="w3-container w3-padding">
       <div class="w3-col m12">
         <p style= "text-align: right">
-
-          <button type="button" class="w3-button w3-theme write-btn" onclick="location.href='review.php'">수정하기</button>
-          <h4 class="w3-center"><b>MY Profile</b></h4>
+        
+          <button type="button" class="w3-button w3-theme write-btn" onclick="location.href='review.php'">리뷰보기</button>
+          <h4 class="w3-center"><b>Profile</b></h4>
         </p>
         <p class="w3-center"><img src="<?php echo $_SESSION['user_img']?>" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
 

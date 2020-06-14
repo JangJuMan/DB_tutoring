@@ -46,9 +46,6 @@
     echo "<script>alert('잘못된 접근입니다.')</script>";
     echo "<script>location.href='login.php'</script>";
   }
-
-  // 현재 페이지 정보 기록
-  $_SESSION['now'] = "main";
   ?>
 
 
@@ -61,7 +58,7 @@
       <!-- Left Column -->
       <LeftColumn include-html="../components/leftColumn.php"></LeftColumn>
       <!-- Middle Column -->
-      <MiddleColumn include-html="../components/middleColumn.php"><MiddleColumn>
+      <MiddleColumn include-html="../components/rightmodify.php"><MiddleColumn>
     <!-- End Grid -->
     </div>
   <!-- End Page Container -->
