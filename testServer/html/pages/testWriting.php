@@ -24,15 +24,6 @@
   $_SESSION['DB_pw'] = "hgudba11*";
   $_SESSION['DB_db'] = "itp40001";
 
-
-  $_SESSION['user_table'] = "User";
-  $_SESSION['bbs_table'] = "Bbs";
-  $_SESSION['comment_table'] = "Comment";
-  $_SESSION['mypage_table'] = "Mypage";
-  $_SESSION['notice_table'] = "Notice";
-
-
-
   // DB 연결
   $conn = new mysqli($_SESSION['DB_host'], $_SESSION['DB_id'], $_SESSION['DB_pw'], $_SESSION['DB_db']);
   if($conn->connect_error){
@@ -115,20 +106,6 @@
       document.getElementById(id2).innerHTML = "<i class='fa fa-comment'></i> Comment";
     }
   }
-
-  function myWriting(form_id, crud_id){
-
-    document.getElementById("crudType_insert").value = "text_insert";
-    document.getElementById(form_id).submit();
-
-  }
-
-
-
-
-
-
-
 
   // file decomposition
   includeHTML(function(){
