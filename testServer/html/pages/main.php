@@ -28,6 +28,8 @@
   $_SESSION['user_table'] = "User";
   $_SESSION['bbs_table'] = "Bbs";
   $_SESSION['comment_table'] = "Comment";
+  $_SESSION['mypage_table'] = "Mypage";
+
 
 
   // DB 연결
@@ -57,9 +59,9 @@
       echo "ERROR: " . $enroll_new_user . "<br>" . $conn->error;
     }
 
-    // DB에서 유저정보 가져오고 저장하기 (SELECT 하기) // 로그인한 유저
+    // DB에서 유저정보 가져오고 저장하기 (SELECT 하기)
     $to_get_user_info = "SELECT * FROM $_SESSION[user_table] WHERE email='$user_email'";
-    $result = mysqli_query($conn, $to_get_user_info); // 연결객체, 쿼리
+    $result = mysqli_query($conn, $to_get_user_info);
     $user_info = mysqli_fetch_assoc($result);
     $_SESSION['user_id'] = $user_info['user_id'];
     $_SESSION['gender'] = $user_info['gender'];
@@ -141,6 +143,30 @@
       // alert('now : block -> none');
       document.getElementById(id).style.display = 'none';
       document.getElementById(id2).innerHTML = "<i class='fa fa-comment'></i> Comment";
+    }
+  }
+
+  // form DB 연결하기
+  function mySubmit(form_id, operation, crud_id){
+    if(operation == "modify"){
+      var input_modify = confirm("글을 수정하시겠습니까?");
+      if(input_modify){
+        document.getElementById(crud_id).value = "comment_update";
+        document.getElementById(form_id).submit();
+      }
+    }
+    else if(operation == "delete"){
+      var input_delete = confirm("글을 삭제하시겠습니까?");
+      if(input_delete){
+        document.getElementById(crud_id).value = "comment_delete";
+        document.getElementById(form_id).submit();
+      }
+    }
+    else if(operation == "insert"){
+      document.getElementById(form_id).submit();
+    }
+    else{
+      alert("error");
     }
   }
 

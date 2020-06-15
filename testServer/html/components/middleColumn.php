@@ -10,13 +10,13 @@
 
   // 모든 게시글 불러오기 --> list 로 저장.
   $bbs_cnt = 0;
-  $bbs_list = array();  // 배열 이름 ( 배열 접근 시 사용 )= 배열 생성
-  $load_all_bbs = "SELECT * FROM $_SESSION[bbs_table] WHERE state != -1"; // 모든 컬럼 조회
-  $result = $conn->query($load_all_bbs);  // (sql) 쿼리 날리는 방법
+  $bbs_list = array();
+  $load_all_bbs = "SELECT * FROM $_SESSION[bbs_table] WHERE state != -1 ORDER BY bbs_Id DESC";
+  $result = $conn->query($load_all_bbs);
   if($result->num_rows > 0){
-    while($row = $result->fetch_assoc()){ // mysqli_fetch_assoc 함수는 mysqli_query 를 통해 얻은 리절트 셋(result set)에서 레코드를 1개씩 리턴해주는 함수입니다.
-      array_push($bbs_list, $row); // 어레이에 넣어주는 함수
-      $bbs_cnt++; // 어레이에 있는 숫자 만큼 count 를 해줌
+    while($row = $result->fetch_assoc()){
+      array_push($bbs_list, $row);
+      $bbs_cnt++;
     }
   }else{
     echo "bbs list --> 0 result";
@@ -76,21 +76,20 @@
     <?php
     // 게시글이 하나 이상 있을 때,
     if($bbs_cnt != 0){
-      for($i = 0; $i < $bbs_cnt; $i++){  // $ 이게 변수 설정 하는 건가 보다
+      for($i = 0; $i < $bbs_cnt; $i++){
         // 삭제된 게시글이 아닐 때 화면에 띄운다.
-        if($bbs_list[$i]['state'] != -1){  // 아까 어레이로 만들어서 , 0 번째 레코드 ,state 컬럼이 !=-1 인 경우
+        if($bbs_list[$i]['state'] != -1){
           // 게시글 작성자 id로부터 유저정보 가져오기 : 단품으로 가져오기
           $writer_id = $bbs_list[$i]['user_id'];
           $get_writer_info = "SELECT * FROM $_SESSION[user_table] WHERE user_id='$writer_id'";
-          $result = mysqli_query($conn, $get_writer_info);  // 쿼리 날려서 담아
-          $writer_info = mysqli_fetch_assoc($result); //  mysqli_fetch_assoc 함수는 mysqli_query 를 통해 얻은 리절트 셋(result set)에서 레코드를 1개씩 리턴해주는 함수입니다.
-          // 여기서는 writer id 를 가진 애의정보만 넣어 주겠지
+          $result = mysqli_query($conn, $get_writer_info);
+          $writer_info = mysqli_fetch_assoc($result);
 
           // 해당 게시글의 모든 댓글 불러오기 --> list 로 저장. ($comment_list)
           $bbs_id = $bbs_list[$i]['bbs_Id'];
           $comment_cnt = 0;
           $comment_list = array();
-          $load_all_comment = "SELECT * FROM $_SESSION[comment_table] WHERE bbs_id=$bbs_id";
+          $load_all_comment = "SELECT * FROM $_SESSION[comment_table] WHERE bbs_id=$bbs_id AND state != -1";
           $comment_result = $conn->query($load_all_comment);
           if($comment_result->num_rows > 0){
             while($row = $comment_result->fetch_assoc()){
@@ -115,6 +114,7 @@
             else{
               echo '<h4>'.$writer_info['name'].' (튜티)</h4><br>';
             }
+
             echo '
             <h4>'. $bbs_list[$i]['title'] .'</h4>
             <hr class="w3-clear">
@@ -146,17 +146,26 @@
                     else{
                       echo $comment_writer_info['name'].' (튜티)</p><br>';
                     }
-                    echo '
-                    <p class="comment-text">'.$comment_list[$j]['content'].'</p>
-                    <p class="comment-time">'.$comment_list[$j]['modify_time'].'</p>';
                     // 자신의 댓글이면 수정 및 삭제하기 활성화
                     if($_SESSION['user_id'] == $comment_list[$j]['user_id']){
                       echo '
-                        <div class="comment-control">
-                          <a class="comment-modify">수정하기</a>
-                          <a class="comment-delete">삭제하기</a>
-                        </div>
+                        <form id="modify_comment_form_'.$i.'_'.$j.'"  method="post" action="../dbConnection/dbConnection.php">
+                          <textarea name="comment" class="comment-text-input" >'.$comment_list[$j]['content'].'</textarea>
+                          <p class="comment-time">'.$comment_list[$j]['modify_time'].'</p>
+                          <div class="comment-control">
+                            <input id="crudType_'.$i.'_'.$j.'" name="crudType" type="hidden" value=""/>
+                            <input name="return_location" type="hidden" value="../pages/main.php"/>
+                            <input name="comment_id" value="'.$comment_list[$j]['comment_id'].'" type="hidden"/>
+                            <input type="button" class="comment-modify" value="수정하기" onclick="mySubmit(\'modify_comment_form_'.$i.'_'.$j.'\', \'modify\', \'crudType_'.$i.'_'.$j.'\')"/>
+                            <input type="button" class="comment-delete" value="삭제하기" onclick="mySubmit(\'modify_comment_form_'.$i.'_'.$j.'\', \'delete\', \'crudType_'.$i.'_'.$j.'\')"/>
+                          </div>
+                        </form>
                       ';
+                    }
+                    else{
+                      echo '
+                      <p class="comment-text-input">'.$comment_list[$j]['content'].'</p>
+                      <p class="comment-time">'.$comment_list[$j]['modify_time'].'</p>';
                     }
                     echo '
                   </div>
@@ -164,11 +173,65 @@
               }
             echo '
               <div>
-                <input class="comment-input" type="text" placeholder="댓글을 입력해주세요">
-                <input class="comment-submit" type="submit" value="댓글 등록">
+                <form id="comment_insert_'.$i.'_'.$j.'" method="post" action="../dbConnection/dbConnection.php">
+                  <input name="crudType_insert" type="hidden" value="comment_insert"/>
+                  <input name="return_location" type="hidden" value="../pages/main.php"/>
+                  <input name="bbs_id" value="'.$bbs_id.'" type="hidden"/>
+                  <input name="user_id" value="'.$_SESSION['user_id'].'" type="hidden"/>
+                  <input name="comment_input" class="comment-input" type="text" placeholder="댓글을 입력해주세요" value="">
+                  <input class="comment-submit" type="button" value="댓글 등록" onclick="mySubmit(\'comment_insert_'.$i.'_'.$j.'\', \'insert\', 1)"/>
+                </form>
               </div>
-            </div>
-            <button id="bbs_like-'.$i.'" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
+            </div>';
+            // Tutroing의 경우에만 LIKE 허용.
+            if($bbs_list[$i]['state'] == 3){
+              // 모든 interest 불러오기 --> list 로 저장.
+              $interest_cnt = 0;
+              $interest_list = array();
+              $load_all_interest = "SELECT * FROM $_SESSION[mypage_table] WHERE user_id=$_SESSION[user_id] AND state != -1";
+              $interest_result = $conn->query($load_all_interest);
+              if($interest_result->num_rows > 0){
+                while($row = $interest_result->fetch_assoc()){
+                  array_push($interest_list, $row);
+                  $interest_cnt++;
+                }
+              }
+
+              $interest_check = 0;
+              for($k=0; $k<$interest_cnt; $k++){
+                if($bbs_list[$i]['bbs_Id'] == $interest_list[$k]['interesting_tutoring']){
+                  $interest_check = 1;
+                  break;
+                }
+              }
+
+              // 내가 좋아요한 게시글이라면.
+              if($interest_check == 1){
+                echo '
+                  <form id="like_go_false_'.$i.'_'.$j.'" method="post" action="../dbConnection/dbConnection.php">
+                    <input name="crudType_like" type="hidden" value="tutoring_like_off"/>
+                    <input name="bbs_id" type="hidden" value="'.$bbs_list[$i]['bbs_Id'].'"/>
+                    <input name="user_id" type="hidden" value="'.$_SESSION['user_id'].'"/>
+                    <input name="return_location" type="hidden" value="../pages/main.php"/>
+                    <button id="bbs_like-'.$i.'" class="w3-button w3-theme-l3 w3-margin-bottom"><i class="fa fa-thumbs-down"></i>  UnLike</button>
+                  </form>
+                ';
+              }
+              else{
+                echo '
+                  <form id="like_go_true_'.$i.'_'.$j.'" method="post" action="../dbConnection/dbConnection.php">
+                    <input name="crudType_like" type="hidden" value="tutoring_like_on"/>
+                    <input name="bbs_id" type="hidden" value="'.$bbs_list[$i]['bbs_Id'].'"/>
+                    <input name="user_id" type="hidden" value="'.$_SESSION['user_id'].'"/>
+                    <input name="return_location" type="hidden" value="../pages/main.php"/>
+                    <button id="bbs_like-'.$i.'" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
+                  </form>
+                ';
+              }
+
+
+            }
+            echo'
             <button id="bbs_comment-'.$i.'" class="w3-button w3-theme-d2 w3-margin-bottom" onclick="openComment(\'bbs_additional-'.$i.'\', \'bbs_comment-'.$i.'\')"><i class="fa fa-comment"></i>  Comment</button>
           </div>
           ';
