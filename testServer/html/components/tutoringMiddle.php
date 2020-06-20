@@ -32,7 +32,7 @@
       $from = 50000;
       $to = 999999999;
     }
-    $load_all_bbs = "SELECT * FROM (SELECT * FROM Bbs WHERE state != -1 AND title LIKE '%$title%') AS a
+    $load_all_bbs = "SELECT * FROM (SELECT * FROM Bbs WHERE state = 3 AND title LIKE '%$title%') AS a
                       JOIN (SELECT payment, bbs_id, tutoring_id FROM Tutoring WHERE payment BETWEEN $from AND $to) AS b
                       ON b.bbs_id=a.bbs_Id";
 
@@ -114,7 +114,7 @@
     $_SESSION['sql'] = $load_all_bbs;
   }
   else{
-    $load_all_bbs = "SELECT * FROM $_SESSION[bbs_table] WHERE state != -1 ORDER BY bbs_Id DESC";
+    $load_all_bbs = "SELECT * FROM $_SESSION[bbs_table] WHERE state = 3 ORDER BY bbs_Id DESC";
   }
   $result = $conn->query($load_all_bbs);
   if($result->num_rows > 0){
@@ -374,7 +374,7 @@
     else{
       echo '
       <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <h1 class="no-data">게시글이 없습니다.</h1>"
+        <h1 class="no-data">게시글이 없습니다.'.$_SESSION['sql'].'</h1>"
       </div>
       ';
     }

@@ -26,12 +26,12 @@
       auth2.attachClickHandler(element, {},
           function(googleUser) {
             document.querySelector('#a').innerHTML = 'Login Successed';
-            document.getElementById('name').innerText = "Signed in: "
+            /*document.getElementById('name').innerText = "Signed in: \n"
             + "Name : " + googleUser.getBasicProfile().getName()
             + "\nEmail : " + googleUser.getBasicProfile().getEmail()
             + "\nGivenName : " + googleUser.getBasicProfile().getGivenName()
             + "\nFamilyName : " + googleUser.getBasicProfile().getFamilyName()
-            + "\nImageUrl : " + googleUser.getBasicProfile().getImageUrl();
+            + "\nImageUrl : " + googleUser.getBasicProfile().getImageUrl();*/
             document.getElementById("form_name").value = googleUser.getBasicProfile().getName();
             document.getElementById("form_email").value = googleUser.getBasicProfile().getEmail();
             document.getElementById("form_img").value = googleUser.getBasicProfile().getImageUrl();

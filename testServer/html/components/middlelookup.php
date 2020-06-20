@@ -75,5 +75,5 @@ $writer_info = mysqli_fetch_assoc($result); //  mysqli_fetch_assoc 함수는 mys
 
 
 
-<!— End Middle Column —>
+<!-- End Middle Column -->
 </div>

@@ -11,110 +11,19 @@
   // 모든 게시글 불러오기 --> list 로 저장.
   $bbs_cnt = 0;
   $bbs_list = array();
-  if($_SESSION['is_tutee'] != null || $_SESSION['subject'] != null || $_SESSION['payment'] != null || $_SESSION['search_title'] != null){
+  if($_SESSION['search_title'] != null){
 
     // title 검색  + payment 검색
     $title = $_SESSION['search_title'];
 
-    if($_SESSION['payment'] == 0 || $_SESSION['payment'] == null){
-      $from = -1;
-      $to = 999999999;
-    }
-    else if($_SESSION['payment'] == 1){
-      $from = 0;
-      $to = 20000;
-    }
-    else if($_SESSION['payment'] == 2){
-      $from = 20000;
-      $to = 50000;
-    }
-    else if($_SESSION['payment'] == 3){
-      $from = 50000;
-      $to = 999999999;
-    }
-    $load_all_bbs = "SELECT * FROM (SELECT * FROM Bbs WHERE state != -1 AND title LIKE '%$title%') AS a
-                      JOIN (SELECT payment, bbs_id, tutoring_id FROM Tutoring WHERE payment BETWEEN $from AND $to) AS b
-                      ON b.bbs_id=a.bbs_Id";
-
-    // to_find_tutor 검색
-    if($_SESSION['is_tutee'] != null && $_SESSION['is_tutee'] != 0){
-      if($_SESSION['is_tutee'] == 1){ // 튜터를 찾는다.
-        $to_find_tutor = 1;
-      }
-      else if($_SESSION['is_tutee'] == 2){  // 튜티를 찾는다.
-        $to_find_tutor = 0;
-      }
-      $load_all_bbs = $load_all_bbs . " JOIN (SELECT to_find_tutor, bbs_id FROM Tutoring WHERE to_find_tutor = $to_find_tutor) AS c
-                        ON c.bbs_id=a.bbs_Id";
-    }
-
-    // Subject 검색
-    if($_SESSION['subject'] != null && $_SESSION['subject'] != 0){
-      $subject = $_SESSION['subject'];
-      $load_all_bbs = $load_all_bbs . " JOIN (SELECT sub_id, bbs_id FROM $_SESSION[tutoring_table] WHERE sub_id=$subject) AS d
-                      ON d.bbs_id=a.bbs_Id";
-    }
-
-    // 가능한 요일 검색
-    $day_cnt = $_SESSION['mon'] + $_SESSION['tue'] + $_SESSION['wed'] + $_SESSION['thr'] + $_SESSION['fri'] + $_SESSION['sat'] + $_SESSION['sun'];
-    $_SESSION['day_cnt'] = $day_cnt;
-    if($day_cnt > 0){
-      $load_all_bbs = $load_all_bbs . " JOIN( SELECT tutoring_id FROM $_SESSION[tutoring_day_table] WHERE ";
-      if($_SESSION['mon'] == 1){
-        $load_all_bbs = $load_all_bbs . "mon=1 ";
-        $day_cnt--;
-        if($day_cnt > 0){
-          $load_all_bbs = $load_all_bbs . "OR ";
-        }
-      }
-      if($_SESSION['tue'] == 1){
-        $load_all_bbs = $load_all_bbs . "tue=1 ";
-        $day_cnt--;
-        if($day_cnt > 0){
-          $load_all_bbs = $load_all_bbs . "OR ";
-        }
-      }
-      if($_SESSION['wed'] == 1){
-        $load_all_bbs = $load_all_bbs . "wed=1 ";
-        $day_cnt--;
-        if($day_cnt > 0){
-          $load_all_bbs = $load_all_bbs . "OR ";
-        }
-      }
-      if($_SESSION['thr'] == 1){
-        $load_all_bbs = $load_all_bbs . "thur=1 ";
-        $day_cnt--;
-        if($day_cnt > 0){
-          $load_all_bbs = $load_all_bbs . "OR ";
-        }
-      }
-      if($_SESSION['fri'] == 1){
-        $load_all_bbs = $load_all_bbs . "fri=1 ";
-        $day_cnt--;
-        if($day_cnt > 0){
-          $load_all_bbs = $load_all_bbs . "OR ";
-        }
-      }
-      if($_SESSION['sat'] == 1){
-        $load_all_bbs = $load_all_bbs . "sat=1 ";
-        $day_cnt--;
-        if($day_cnt > 0){
-          $load_all_bbs = $load_all_bbs . "OR ";
-        }
-      }
-      if($_SESSION['sun'] == 1){
-        $day_cnt--;
-        $load_all_bbs = $load_all_bbs . "sun=1 ";
-      }
-      $load_all_bbs = $load_all_bbs . ") AS e ON e.tutoring_id=b.tutoring_id";
-    }
+    $load_all_bbs = "SELECT * FROM Bbs WHERE state = 2 AND title LIKE '%$title%'";
 
     // ORDER BY (맨 마지막에 추가할 것)
-    $load_all_bbs = $load_all_bbs . " ORDER BY a.bbs_Id DESC";
+    $load_all_bbs = $load_all_bbs . " ORDER BY bbs_Id DESC";
     $_SESSION['sql'] = $load_all_bbs;
   }
   else{
-    $load_all_bbs = "SELECT * FROM $_SESSION[bbs_table] WHERE state != -1 ORDER BY bbs_Id DESC";
+    $load_all_bbs = "SELECT * FROM $_SESSION[bbs_table] WHERE state = 2 ORDER BY bbs_Id DESC";
   }
   $result = $conn->query($load_all_bbs);
   if($result->num_rows > 0){
@@ -124,17 +33,6 @@
     }
   }
 
-  // load subjects
-  $sub_cnt = 0;
-  $sub_list = array();
-  $load_all_sub = "SELECT * FROM $_SESSION[subject_table]";
-  $sub_result = $conn->query($load_all_sub);
-  if($sub_result->num_rows > 0){
-    while($row = $sub_result->fetch_assoc()){
-      array_push($sub_list, $row);
-      $sub_cnt++;
-    }
-  }
 ?>
 
 <!-- <div class="w3-col m7"> -->
@@ -286,7 +184,7 @@
                           <p class="comment-time">'.$comment_list[$j]['modify_time'].'</p>
                           <div class="comment-control">
                             <input id="crudType_'.$i.'_'.$j.'" name="crudType" type="hidden" value=""/>
-                            <input name="return_location" type="hidden" value="../pages/main.php"/>
+                            <input name="return_location" type="hidden" value="../pages/notice.php"/>
                             <input name="comment_id" value="'.$comment_list[$j]['comment_id'].'" type="hidden"/>
                             <input type="button" class="comment-modify" value="수정하기" onclick="mySubmit(\'modify_comment_form_'.$i.'_'.$j.'\', \'modify\', \'crudType_'.$i.'_'.$j.'\')"/>
                             <input type="button" class="comment-delete" value="삭제하기" onclick="mySubmit(\'modify_comment_form_'.$i.'_'.$j.'\', \'delete\', \'crudType_'.$i.'_'.$j.'\')"/>
@@ -307,7 +205,7 @@
               <div>
                 <form id="comment_insert_'.$i.'_'.$j.'" method="post" action="../dbConnection/dbConnection.php">
                   <input name="crudType_insert" type="hidden" value="comment_insert"/>
-                  <input name="return_location" type="hidden" value="../pages/main.php"/>
+                  <input name="return_location" type="hidden" value="../pages/notice.php"/>
                   <input name="bbs_id" value="'.$bbs_id.'" type="hidden"/>
                   <input name="user_id" value="'.$_SESSION['user_id'].'" type="hidden"/>
                   <input name="comment_input" class="comment-input" type="text" placeholder="댓글을 입력해주세요" value="">
@@ -344,7 +242,7 @@
                     <input name="crudType_like" type="hidden" value="tutoring_like_off"/>
                     <input name="bbs_id" type="hidden" value="'.$bbs_list[$i]['bbs_Id'].'"/>
                     <input name="user_id" type="hidden" value="'.$_SESSION['user_id'].'"/>
-                    <input name="return_location" type="hidden" value="../pages/main.php"/>
+                    <input name="return_location" type="hidden" value="../pages/notice.php"/>
                     <button id="bbs_like-'.$i.'" class="w3-button w3-theme-l3 w3-margin-bottom"><i class="fa fa-thumbs-down"></i>  UnLike</button>
                   </form>
                 ';
@@ -355,13 +253,11 @@
                     <input name="crudType_like" type="hidden" value="tutoring_like_on"/>
                     <input name="bbs_id" type="hidden" value="'.$bbs_list[$i]['bbs_Id'].'"/>
                     <input name="user_id" type="hidden" value="'.$_SESSION['user_id'].'"/>
-                    <input name="return_location" type="hidden" value="../pages/main.php"/>
+                    <input name="return_location" type="hidden" value="../pages/notice.php"/>
                     <button id="bbs_like-'.$i.'" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
                   </form>
                 ';
               }
-
-
             }
             echo'
             <button id="bbs_comment-'.$i.'" class="w3-button w3-theme-d2 w3-margin-bottom" onclick="openComment(\'bbs_additional-'.$i.'\', \'bbs_comment-'.$i.'\')"><i class="fa fa-comment"></i>  Comment</button>

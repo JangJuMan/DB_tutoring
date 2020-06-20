@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>W3.CSS Template</title>
+<title>Tutoring Matching System</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -29,6 +29,9 @@
   $_SESSION['bbs_table'] = "Bbs";
   $_SESSION['comment_table'] = "Comment";
   $_SESSION['mypage_table'] = "Mypage";
+  $_SESSION['subject_table'] = "Subject";
+  $_SESSION['tutoring_table'] = "Tutoring";
+  $_SESSION['tutoring_day_table'] = "Tutoring_Day";
 
 
 
@@ -74,9 +77,41 @@
     $_SESSION['is_tutor'] = $user_info['is_tutor'];
   }
 
+  // Filter
+  if($_POST['is_tutee'] != 0 || $_POST['subject'] != 0 || $_POST['payment'] != 0 || $_POST['search_title'] != null
+      || $_POST['mon'] != null || $_POST['tue'] != null || $_POST['wed'] != null || $_POST['thr'] != null
+      || $_POST['fri'] != null || $_POST['sat'] != null || $_POST['sun'] != null ){
+    $_SESSION['is_tutee'] = $_POST['is_tutee'];
+    $_SESSION['subject'] = $_POST['subject'];
+    $_SESSION['payment'] = $_POST['payment'];
+    $_SESSION['search_title'] = $_POST['search_title'];
+    $_POST['mon'] == "on" ? $_SESSION['mon'] = 1 : $_SESSION['mon'] = 0;
+    $_POST['tue'] == "on" ? $_SESSION['tue'] = 1 : $_SESSION['tue'] = 0;
+    $_POST['wed'] == "on" ? $_SESSION['wed'] = 1 : $_SESSION['wed'] = 0;
+    $_POST['thr'] == "on" ? $_SESSION['thr'] = 1 : $_SESSION['thr'] = 0;
+    $_POST['fri'] == "on" ? $_SESSION['fri'] = 1 : $_SESSION['fri'] = 0;
+    $_POST['sat'] == "on" ? $_SESSION['sat'] = 1 : $_SESSION['sat'] = 0;
+    $_POST['sun'] == "on" ? $_SESSION['sun'] = 1 : $_SESSION['sun'] = 0;
+    // echo "<script>alert('post value is.')</script>";
+  }
+  else{
+    $_SESSION['is_tutee'] = null;
+    $_SESSION['subject'] = null;
+    $_SESSION['payment'] = null;
+    $_SESSION['search_title'] = null;
+    $_SESSION['mon'] = 1;
+    $_SESSION['tue'] = 1;
+    $_SESSION['wed'] = 1;
+    $_SESSION['thr'] = 1;
+    $_SESSION['fri'] = 1;
+    $_SESSION['sat'] = 1;
+    $_SESSION['sun'] = 1;
+    // echo "<script>alert('post value is not.')</script>";
+  }
+
   // 비 정상적인 접근 차단
   if($_SESSION['user_name'] == NULL && $_SESSION['user_email'] == NULL &&
-    $_SESSION['user_img'] == NULL){
+    $_SESSION['user_img'] == NULL && $_SESSION['user_id'] == NULL){
     echo "<script>alert('잘못된 접근입니다.')</script>";
     echo "<script>location.href='login.php'</script>";
   }
