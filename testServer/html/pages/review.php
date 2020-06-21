@@ -30,6 +30,9 @@
     die("CONNECTION FAILED! : ". $conn->connect_error);
   }
 
+  $_SESSION['review_table'] = "Review";
+
+
   // Login page에서 넘어온 정보 저장하기
   if($_POST['user_name'] != NULL){
     $user_name = $_POST['user_name'];
@@ -59,6 +62,7 @@
       <LeftColumn include-html="../components/leftColumn.php"></LeftColumn>
       <!-- Middle Column -->
       <MiddleColumn include-html="../components/mid_review.php"><MiddleColumn>
+        <!-- 2_mid_review_preversion -->
     <!-- End Grid -->
     </div>
   <!-- End Page Container -->
@@ -107,6 +111,29 @@
     }
   }
 
+  // form DB 연결하기
+  function mySubmit(form_id, operation, crud_id){
+    if(operation == "modify"){
+      var input_modify = confirm("리뷰를 수정하시겠습니까?");
+      if(input_modify){
+        document.getElementById(crud_id).value = "review_update";
+        document.getElementById(form_id).submit();
+      }
+    }
+    else if(operation == "delete"){
+      var input_delete = confirm("리뷰를 삭제하시겠습니까?");
+      if(input_delete){
+        document.getElementById(crud_id).value = "review_delete";
+        document.getElementById(form_id).submit();
+      }
+    }
+    else if(operation == "insert"){
+      document.getElementById(form_id).submit();
+    }
+    else{
+      alert("error");
+    }
+  }
   // file decomposition
   includeHTML(function(){
     includeRouter(function(){
