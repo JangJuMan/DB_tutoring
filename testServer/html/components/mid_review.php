@@ -20,7 +20,7 @@
     }
   }
   else{
-    echo "review list --> 0 result";
+    // echo "review list --> 0 result";
   }
 
 
@@ -90,12 +90,13 @@
 
 echo'<div class="w3-col m9">
   <div class="w3-container w3-card w3-round w3-margin review-user-info">
-    <img src="'.$r_info['image'].'class="w3-left w3-circle w3-margin-right" style="width:60px">
+    <img src="'.$r_info['image'].'" class="w3-left w3-circle w3-margin-right" style="width:60px;">
     <span class="w3-right w3-opacity"> </span>
-    <h4>' .$r_info['name'].'</h4><br>';
-      if($r_info['is_tutor'] ==1 )echo'<h4> Tutor </h4>';
-      else echo'<h4> Tutee </h4>';
+    <h4>' .$r_info['name'];
+      if($r_info['is_tutor'] ==1 )echo' Tutor </h4>';
+      else echo' Tutee </h4>';
     echo'
+    <br>
     <hr class="w3-clear">
       <div class="user-info">';
 
@@ -114,7 +115,7 @@ echo'<div class="w3-col m9">
       </div>
   </div>';
 
-      echo '<h2> <pre> <strong> 리뷰글 (최신순) </strong> </pre> </h2>';
+      echo '<h2> <pre> <strong> 리뷰글 </strong> </pre> </h2>';
   for($i=0; $i< $w_cnt; $i++){
     if($w_list[$i]['state'] != -1){
     if($list_of_w[$i] = $r_id){
@@ -164,8 +165,8 @@ echo'<div class="w3-col m9">
                               <input name="return_location" type="hidden" value="../pages/review.php"/>
                               <input name="writer_id" value="'.$w_list[$i]['writer_id'].'" type="hidden"/>
                               <input name="review_id" value="'.$w_list[$i]['review_id'].'" type="hidden"/>
-                              <input type="button" class="w3-button w3-theme-d1 w3-margin-bottom" value="수정하기" onclick="mySubmit(\'modify_review_form_'.$w_list[$i]['review_id'].'_'.$id.'\', \'modify\', \'crudType_'.$w_list[$i]['review_id'].'_'.$id.'\')"/>
-                              <input type="button" class="w3-button w3-theme-d1 w3-margin-bottom" value="삭제하기" onclick="mySubmit(\'modify_review_form_'.$w_list[$i]['review_id'].'_'.$id.'\', \'delete\', \'crudType_'.$w_list[$i]['review_id'].'_'.$id.'\')"/>
+                              <input type="button" class="review-modify" value="수정하기" onclick="mySubmit(\'modify_review_form_'.$w_list[$i]['review_id'].'_'.$id.'\', \'modify\', \'crudType_'.$w_list[$i]['review_id'].'_'.$id.'\')"/>
+                              <input type="button" class="review-delete" value="삭제하기" onclick="mySubmit(\'modify_review_form_'.$w_list[$i]['review_id'].'_'.$id.'\', \'delete\', \'crudType_'.$w_list[$i]['review_id'].'_'.$id.'\')"/>
                             </div>
                           </form>
                         ';
@@ -193,6 +194,7 @@ echo'<div class="w3-col m9">
 $i = 1;
 //review insert
 echo '
+<hr>
 <div class="w3-container w3-card w3-white w3-round w3-margin" style="padding-bottom: 1em;"><br>
  <h5>과외는 어땠나요?</h5>
   <hr class="w3-clear">

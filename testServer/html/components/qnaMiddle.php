@@ -88,7 +88,7 @@
                 echo '<button type="button" class="w3-button w3-theme write-btn" onclick="location.href=\'testWriting.php\'"><i class="fas fa-pencil-alt"></i> 글쓰기</button>';
               }
               else if($_SESSION['now'] == "qna"){
-                echo '<button type="button" class="w3-button w3-theme write-btn" onclick="location.href=\'testWriting.php\'"><i class="fas fa-pencil-alt"></i> 글쓰기</button>';
+                echo '<button type="button" class="w3-button w3-theme write-btn" onclick="location.href=\'qna_jungsup.php\'"><i class="fas fa-pencil-alt"></i> 글쓰기</button>';
               }
               ?>
             </div>

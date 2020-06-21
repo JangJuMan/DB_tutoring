@@ -20,7 +20,7 @@
   }else{
     echo "user list --> 0 result";
   }
-
+ 
 ?>
 
 <!-- 여기까지 유저 정보 리스트에 저장 -->
@@ -57,13 +57,13 @@ $writer_info = mysqli_fetch_assoc($result); //  mysqli_fetch_assoc 함수는 mys
             <div class="w3-container w3-padding">
               <div class="w3-container w3-padding">
 
-                <p><option value=1> 이름: <?php echo $user_list[0]['name']; ?> </option></p>
-                <p><option value=1> <b>성별:</b> <?php echo $user_list[0]['gender']; ?></option></p>
-                <p><option value=2> <b>나이:</b> <?php echo $user_list[0]['birth_year']; ?></option></p>
+                <p><option value=1> <b>이름: </b><?php echo $user_list[0]['name']; ?> </option></p>
+                <p><option value=1> <b>성별: </b> <?php echo $user_list[0]['gender']; ?></option></p>
+                <p><option value=2> <b>나이: </b> <?php echo $user_list[0]['birth_year']; ?></option></p>
                 <!-- <p><option value=3> <b>과외경력:</b>  echo $user_list[1]['name']; ?></option></p> -->
-                <p><option value=4> <b>학교:</b> <?php echo $user_list[0]['address']; ?> </option></p>
-                <p><option value=5> <b>토플/토익 점수:</b>  </option></p>
-                <p><option value=6> <b>e-mail:</b> <?php echo $user_list[0]['email']; ?> </option></p>
+                <p><option value=4> <b>학교: </b> <?php echo $user_list[0]['address']; ?> </option></p>
+                <p><option value=5> <b>토플/토익 점수: </b>  </option></p>
+                <p><option value=6> <b>e-mail: </b> <?php echo $user_list[0]['email']; ?> </option></p>
 
               </div>
             </div>

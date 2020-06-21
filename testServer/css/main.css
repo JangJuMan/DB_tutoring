@@ -133,3 +133,40 @@
 .comment-time{
   margin-right: 1em;
 }
+
+.review-input{
+  padding: 0.5em;
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #bbb;
+}
+.review-modify{
+  border: 0px solid black;
+  background-color: #fff;
+}
+.review-modify:hover{
+  cursor: pointer;
+  color: #555;
+}
+.review-delete{
+  margin-left: 0.5em;
+  border: 0px solid black;
+  background-color: #fff;
+}
+.review-delete:hover{
+  cursor: pointer;
+  color: #555;
+}
+
+/* testWriting */
+.write-paddng:{
+  padding-bottom: 1em;
+}
+.form-element {
+  margin-bottom: 0.5em;
+  width: 100%;
+}
+.form-btn {
+  margin: 0.1em 0.1em 0.7em 0.1em;
+  border-radius: 3px;
+}

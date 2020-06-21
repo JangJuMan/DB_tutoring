@@ -32,6 +32,7 @@
   $_SESSION['subject_table'] = "Subject";
   $_SESSION['tutoring_table'] = "Tutoring";
   $_SESSION['tutoring_day_table'] = "Tutoring_Day";
+  $_SESSION['loction_table'] = "Location";
 
 
 

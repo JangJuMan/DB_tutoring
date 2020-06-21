@@ -141,6 +141,39 @@
     // DB 연결 종료
     $conn->close();
   }
+  else if($_POST['writeType'] == "tutorWriting"){
+    $return_location = $_POST['return_location'];
+    $_POST['mon'] == 'on' ? $mon = 1 : $mon = 0;
+    $_POST['tue'] == 'on' ? $tue = 1 : $tue = 0;
+    $_POST['wed'] == 'on' ? $wed = 1 : $wed = 0;
+    $_POST['thr'] == 'on' ? $thur = 1 : $thur = 0;
+    $_POST['fri'] == 'on' ? $fri = 1 : $fri = 0;
+    $_POST['sat'] == 'on' ? $sat = 1 : $sat = 0;
+    $_POST['sun'] == 'on' ? $sun = 1 : $sun = 0;
+    $to_find_tutor = $_POST['to_find_tutor'];
+    $location = $_POST['location'];
+    $content = $_POST['content'];
+
+    // DB 연결
+    $conn = new mysqli($_SESSION['DB_host'], $_SESSION['DB_id'], $_SESSION['DB_pw'], $_SESSION['DB_db']);
+    if($conn->connect_error){
+      die("CONNECTION FAILED! : ". $conn->connect_error);
+    }
+
+    // TODO: SQL 날리기 (정섭이형 SQl 햇던거대로 날려주세요. 위에 정보 다 저장해놨으어요. 유저아이디는 세션에 있는거 쓰면 될거에요)
+    
+    // $update_sql = "DELETE FROM $_SESSION[mypage_table] WHERE user_id=$user_id AND interesting_tutoring=$bbs_id";
+    // if($conn->query($update_sql) === TRUE){
+    //   echo "<script charset=utf-8>alert('관심 게시글에서 삭제되었습니다.')</script>";
+    //   echo "<script>location.href='".$return_location."'</script>";
+    // }
+    // else{
+    //   echo "ERROR: " . $update_sql . "<br>" . $conn->error;
+    // }
+
+    // DB 연결 종료
+    $conn->close();
+  }
   else{
     $comment_input = $_POST['comment'];
     $comment_id = $_POST['comment_id'];
