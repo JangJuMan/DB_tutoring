@@ -30,7 +30,8 @@
   $_SESSION['comment_table'] = "Comment";
   $_SESSION['mypage_table'] = "Mypage";
   $_SESSION['notice_table'] = "Notice";
-
+  $_SESSION['category_table'] = "Category";
+  $_SESSION['qna_table'] = "Qna";
 
 
   // DB 연결
@@ -67,7 +68,7 @@
       <!-- Left Column -->
       <LeftColumn include-html="../components/leftColumn.php"></LeftColumn>
       <!-- Middle Column -->
-      <MiddleColumn include-html="../components/writingNotice.php"><MiddleColumn>
+      <MiddleColumn include-html="../components/qna_middle.php"><MiddleColumn>
     <!-- End Grid -->
     </div>
   <!-- End Page Container -->
