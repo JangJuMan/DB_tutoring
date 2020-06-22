@@ -16,22 +16,7 @@
 </style>
 <body class="w3-theme-l5">
   <?php
-  // 세션 설정 (이건 좀 야매임. 굉장히 보안적으로 취약함. 근데 귀찮으니까 이렇게 한 것일 뿐..)
-
   session_start();
-  $_SESSION['DB_host'] = "localhost";
-  $_SESSION['DB_id'] = "itp40001";
-  $_SESSION['DB_pw'] = "hgudba11*";
-  $_SESSION['DB_db'] = "itp40001";
-
-
-  $_SESSION['user_table'] = "User";
-  $_SESSION['bbs_table'] = "Bbs";
-  $_SESSION['comment_table'] = "Comment";
-  $_SESSION['mypage_table'] = "Mypage";
-  $_SESSION['notice_table'] = "Notice";
-
-
 
   // DB 연결
   $conn = new mysqli($_SESSION['DB_host'], $_SESSION['DB_id'], $_SESSION['DB_pw'], $_SESSION['DB_db']);
@@ -39,24 +24,51 @@
     die("CONNECTION FAILED! : ". $conn->connect_error);
   }
 
-  // Login page에서 넘어온 정보 저장하기
-  if($_POST['user_name'] != NULL){
-    $user_name = $_POST['user_name'];
-    $user_email = $_POST['user_email'];
-    $user_img = $_POST['user_img'];
-    $_SESSION['user_name'] = $user_name;
-    $_SESSION['user_email'] = $user_email;
-    $_SESSION['user_img'] = $user_img;
+  // Filter
+  if($_POST['is_tutee'] != 0 || $_POST['subject'] != 0 || $_POST['payment'] != 0 || $_POST['search_title'] != null
+      || $_POST['mon'] != null || $_POST['tue'] != null || $_POST['wed'] != null || $_POST['thr'] != null
+      || $_POST['fri'] != null || $_POST['sat'] != null || $_POST['sun'] != null ){
+    $_SESSION['is_tutee'] = $_POST['is_tutee'];
+    $_SESSION['subject'] = $_POST['subject'];
+    $_SESSION['payment'] = $_POST['payment'];
+    $_SESSION['search_title'] = $_POST['search_title'];
+    $_POST['mon'] == "on" ? $_SESSION['mon'] = 1 : $_SESSION['mon'] = 0;
+    $_POST['tue'] == "on" ? $_SESSION['tue'] = 1 : $_SESSION['tue'] = 0;
+    $_POST['wed'] == "on" ? $_SESSION['wed'] = 1 : $_SESSION['wed'] = 0;
+    $_POST['thr'] == "on" ? $_SESSION['thr'] = 1 : $_SESSION['thr'] = 0;
+    $_POST['fri'] == "on" ? $_SESSION['fri'] = 1 : $_SESSION['fri'] = 0;
+    $_POST['sat'] == "on" ? $_SESSION['sat'] = 1 : $_SESSION['sat'] = 0;
+    $_POST['sun'] == "on" ? $_SESSION['sun'] = 1 : $_SESSION['sun'] = 0;
+    // echo "<script>alert('post value is.')</script>";
+  }
+  else{
+    $_SESSION['is_tutee'] = null;
+    $_SESSION['subject'] = null;
+    $_SESSION['payment'] = null;
+    $_SESSION['search_title'] = null;
+    $_SESSION['mon'] = 1;
+    $_SESSION['tue'] = 1;
+    $_SESSION['wed'] = 1;
+    $_SESSION['thr'] = 1;
+    $_SESSION['fri'] = 1;
+    $_SESSION['sat'] = 1;
+    $_SESSION['sun'] = 1;
+    // echo "<script>alert('post value is not.')</script>";
   }
 
   // 비 정상적인 접근 차단
   if($_SESSION['user_name'] == NULL && $_SESSION['user_email'] == NULL &&
-    $_SESSION['user_img'] == NULL){
+    $_SESSION['user_img'] == NULL && $_SESSION['user_id'] == NULL){
     echo "<script>alert('잘못된 접근입니다.')</script>";
     echo "<script>location.href='login.php'</script>";
   }
-  ?>
 
+  // 현재 페이지 정보 기록
+  $_SESSION['now'] = "notice";
+
+  // DB연결 종료
+  $conn->close();
+?>
 
   <!-- Navbar -->
   <Navbar include-html="../components/navBar.php"></Navbar>
@@ -67,7 +79,7 @@
       <!-- Left Column -->
       <LeftColumn include-html="../components/leftColumn.php"></LeftColumn>
       <!-- Middle Column -->
-      <MiddleColumn include-html="../components/writingNotice.php"><MiddleColumn>
+      <MiddleColumn include-html="../components/noticeMiddle.php"><MiddleColumn>
     <!-- End Grid -->
     </div>
   <!-- End Page Container -->
@@ -116,19 +128,29 @@
     }
   }
 
-  function myWriting(form_id, crud_id){
-
-    document.getElementById("crudType_insert").value = "text_insert";
-    document.getElementById(form_id).submit();
-
+  // form DB 연결하기
+  function mySubmit(form_id, operation, crud_id){
+    if(operation == "modify"){
+      var input_modify = confirm("글을 수정하시겠습니까?");
+      if(input_modify){
+        document.getElementById(crud_id).value = "comment_update";
+        document.getElementById(form_id).submit();
+      }
+    }
+    else if(operation == "delete"){
+      var input_delete = confirm("글을 삭제하시겠습니까?");
+      if(input_delete){
+        document.getElementById(crud_id).value = "comment_delete";
+        document.getElementById(form_id).submit();
+      }
+    }
+    else if(operation == "insert"){
+      document.getElementById(form_id).submit();
+    }
+    else{
+      alert("error");
+    }
   }
-
-
-
-
-
-
-
 
   // file decomposition
   includeHTML(function(){
